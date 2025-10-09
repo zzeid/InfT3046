@@ -224,4 +224,4 @@ from test.poligoni_polygons order by abc;"""),conn)
 df.to_html(html_out, index=False)
 print("HTML pārskats saglabāts:")
 print(f"   {os.path.abspath(html_out)}")
-#=========================================================================================
+#========================================================================================
