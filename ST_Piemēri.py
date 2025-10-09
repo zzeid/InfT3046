@@ -1,4 +1,4 @@
-#-------------------------------------------------------------------------------------------
+#-- 11.slaids -----------------------------------------------------------------------------------------
 # Importē nepieciešamās bibliotēkas (Import the required libraries)
 from sqlalchemy import create_engine
 import pandas as pd
@@ -8,6 +8,7 @@ import pandas as pd
 #engine = create_engine('postgresql+psycopg2://username:password@localhost:5432/my_database')
 engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/postgres')
 
+#-- 13.slaids -----------------------------------------------------------------------------------------
 # Izpildām vienkāršu vaicājumu, piemēram, datubāzes versijas noskaidrošanai
 # (Execute a simple query, e.g., to check the database version)
 test_query = "SELECT version();"
@@ -17,7 +18,7 @@ version_df = pd.read_sql(test_query, engine)
 with pd.option_context('display.max_colwidth', None):
   print(version_df)
 
-#-------------------------------------------------------------------------------------------
+#-- 15.slaids -----------------------------------------------------------------------------------------
 
 # Definējam SQL vaicājumu, lai iegūtu katra poligona platību un perimetru
 # (Define an SQL query to get each polygon's area and perimeter)
@@ -38,7 +39,7 @@ with pd.option_context('display.max_colwidth', None):
 # # Apskatām pirmos rezultātu ierakstus (View the first few result records)
 # print(area_df.head())
 
-#-------------------------------------------------------------------------------------------
+#-- 17.slaids -----------------------------------------------------------------------------------------
 #Example 2
 # a
 # Vaicājums, lai pārbaudītu vai poligoni A, B, C savstarpēji krustojas
@@ -58,7 +59,7 @@ with pd.option_context('display.max_colwidth', None):
 # bool_df = pd.read_sql(query_intersects, engine)
 # print(bool_df)
 
-#-------------------------------------------------------------------------------------------
+#-- 18.slaids -----------------------------------------------------------------------------------------
 # b
 # Vaicājums, lai atrastu visus punktus, kas atrodas poligonā ar abc='A'
 # (Query to find all points that lie within the polygon where abc='A')
@@ -78,7 +79,7 @@ with pd.option_context('display.max_colwidth', None):
 # points_df = pd.read_sql(query_points_in_A, engine)
 # print(points_df.head())
 
-#-------------------------------------------------------------------------------------------
+#-- 19.slaids -----------------------------------------------------------------------------------------
 # Aprēķinām divu poligonu A un B kopējo laukumu (ST_Intersection)
 # Compute the overlapping area of two polygons A and B (ST_Intersection)
 # query = """
@@ -95,7 +96,7 @@ with pd.option_context('display.max_colwidth', None):
 # # Print the resulting geometry in WKT format (expected to be the polygon representing A ∩ B)
 # print("Intersection A∩B (WKT):", df_intersection['intersection_wkt'][0])
 
-#-------------------------------------------------------------------------------------------
+#-- 24.slaids -----------------------------------------------------------------------------------------
 # # Izgriežam to līniju segmentus, kas atrodas poligonā ar abc='A' (izmantojot ST_Intersection)
 # # Extract the line segments that lie within polygon 'A' (using ST_Intersection for clipping)
 # query_lines = """
@@ -115,7 +116,7 @@ with pd.option_context('display.max_colwidth', None):
 #     # Display a few of the resulting segments (WKT format) with their identifiers
 #     print(df_segments[['line_abc','poly_abc','segment_wkt']].head())
 
-# #-------------------------------------------------------------------------------------------
+# #-- 21.slaids -----------------------------------------------------------------------------------------
 # # Aprēķinām poligona A daļu, kas neietilpst poligonā B (ST_Difference)
 # # Compute the part of polygon A that is not inside polygon B (ST_Difference)
 # query = """
@@ -126,7 +127,7 @@ with pd.option_context('display.max_colwidth', None):
 # df_difference = pd.read_sql(query, engine)
 # print("A \\ B (Difference) WKT:", df_difference['difference_wkt'][0])
 
-# #-------------------------------------------------------------------------------------------
+# #-- 22.slaids -----------------------------------------------------------------------------------------
 # # Aprēķinām poligonu A un B simetrisko starpību – zonas, kas ir tikai A vai tikai B
 # # Compute the symmetric difference of polygons A and B – areas that are only in A or only in B
 # query = """
@@ -140,7 +141,7 @@ with pd.option_context('display.max_colwidth', None):
 # df_symdiff = pd.read_sql(query, engine)
 # print("Symmetric difference A Δ B (WKT):", df_symdiff['symdiff_wkt'][0])
 
-# #-------------------------------------------------------------------------------------------
+# #-- 23.slaids -----------------------------------------------------------------------------------------
 # # Aprēķinām poligonu A un B apvienojumu vienā ģeometrijā (ST_Union)
 # # Compute the union of polygon A and B into a single geometry (ST_Union)
 # query = """
@@ -152,7 +153,7 @@ with pd.option_context('display.max_colwidth', None):
 # df_union_ab = pd.read_sql(query, engine)
 # print("Union of A and B (WKT):", df_union_ab['union_wkt'][0])
 
-# #-------------------------------------------------------------------------------------------
+# #-- 25.slaids -----------------------------------------------------------------------------------------
 # # Izveidojam jaunu tabulu ar līniju segmentiem poligonā A, izmantojot CREATE TABLE ... AS SELECT
 # # Create a new table with line segments inside polygon A using CREATE TABLE ... AS SELECT
 # from sqlalchemy import text
@@ -176,7 +177,7 @@ with pd.option_context('display.max_colwidth', None):
 #     connection.execute(create_query)
 #     connection.commit()   # Apstiprina izmaiņas (Commit the transaction)
 
-#-------------------------------------------------------------------------------------------
+#-- 26.slaids -----------------------------------------------------------------------------------------
 # # Pārbaudām jaunās tabulas datus un, piemēram, saskaitām katra poligona iekšējo līniju kopgarumu
 # # Verify the new table's data and e.g. calculate total length of segments inside each polygon
 # MansSQL = """
@@ -191,8 +192,8 @@ with pd.option_context('display.max_colwidth', None):
 # """
 # df_check = pd.read_sql(MansSQL, engine)
 # print(df_check)
-# #-------------------------------------------------------------------------------------------
 
+# #-- 27.slaids -----------------------------------------------------------------------------------------
 # -*- coding: utf-8 -*-
 # LV: Nolasa PostGIS tabulu test.poligoni_polygons un saglabā abc, perimetru un platību HTML formātā.
 # EN: Reads PostGIS table test.poligoni_polygons and saves abc, perimeter, and area as an HTML report.
@@ -222,4 +223,4 @@ from test.poligoni_polygons order by abc;"""),conn)
 # EN: Save the pandas DataFrame as an HTML table (without index)
 df.to_html(html_out, index=False)
 print("HTML pārskats saglabāts:")
-#print(f"   {os.path.abspath(html_out)}")
+print(f"   {os.path.abspath(html_out)}")
