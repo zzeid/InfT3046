@@ -1,3 +1,4 @@
+-- 49.slaids -----------------------------------------
 /*select
 	ST_Equals(F.geom,G.geom)
 from
@@ -8,8 +9,7 @@ where
 and 
 	G.abc = 'G'*/
 
-
-
+-- 50.slaids -----------------------------------------
 /*
 select
 	ST_GeometryType(geom)
@@ -18,7 +18,7 @@ from
 limit 1
 */
 
-
+-- 51.slaids -----------------------------------------
 /*
 select
 	ST_Dimension(geom)
@@ -27,23 +27,21 @@ from
 limit 1
 */
 
-
+-- 52.slaids -----------------------------------------
 /*select
 	ST_SRID(geom)
 from
 	test.poligoni_polygons
 limit 1*/
 
-
-
-
+-- 53.slaids -----------------------------------------
 /*select
 	ST_Envelope(geom)
 from
 	test.poligoni_polygons
 limit 1*/
 
-
+-- 54., 55. slaids -----------------------------------------
 /*select 
 	abc,
 	ST_Area(geom),
@@ -51,21 +49,21 @@ limit 1*/
 from
 	test.poligoni_polygons*/
 
-
-
+-- 56.slaids -----------------------------------------
 /*select
 	abc,
 	ST_Centroid(geom)
 from
 	test.poligoni_polygons*/
-	
+
+-- 57.slaids -----------------------------------------
 /*select
 	abc,
 	ST_Length(geom)
 from
 	test.liinijas_lines*/
 
-
+-- 59.slaids -----------------------------------------
 /*select
 	ST_Distance(F.geom, G.geom),
 	ST_DistanceSphere (ST_Transform(F.geom,4326), ST_Transform(G.geom,4326))
@@ -77,6 +75,7 @@ where
 	and 
 	G.abc = 'G'*/
 
+-- 58.slaids -----------------------------------------
 /*select
 	ST_Distance(D.geom, E.geom)
 from
@@ -86,7 +85,8 @@ where
 	D.abc = 'D'
 	and 
 	E.abc = 'E'*/
-	
+
+-- 60.slaids -----------------------------------------
 /*select
 	ST_Intersects(A.geom, B.geom) as "A ar B",
 	ST_Intersects(A.geom, C.geom) as "A ar C",
@@ -102,7 +102,7 @@ where
 	and 
 	C.abc = 'C'*/
 
-
+-- 61.slaids -----------------------------------------
 /*select
 	ST_Contains (A.geom, F.geom) as "Vai A satur F?",
 	ST_Contains (A.geom, G.geom) as "Vai A satur G?"
@@ -117,6 +117,7 @@ where
 	and 
 	G.abc = 'G'*/
 
+-- 62.slaids -----------------------------------------
 /*select
 	ST_Intersection (A.geom,
 	B.geom)
@@ -128,6 +129,7 @@ where
 	and 
 	B.abc = 'B'*/
 
+-- 63.slaids -----------------------------------------
 /*select
 	ST_Difference (A.geom,
 	B.geom)
@@ -139,6 +141,7 @@ where
 	and 
 	B.abc = 'B'*/
 
+-- 64.slaids -----------------------------------------
 /*select
 	ST_SymDifference (A.geom,
 	B.geom)
@@ -150,6 +153,7 @@ where
 	and 
 	B.abc = 'B'*/
 
+-- 65.slaids -----------------------------------------
 /*select
 	ST_Union (A.geom,
 	B.geom)
@@ -161,24 +165,13 @@ where
 	and 
 	B.abc = 'B'*/
 
-/*select
-	ST_Union (A.geom,
-	B.geom)
-from
-	test.poligoni_polygons as A,
-	test.poligoni_polygons as B
-where 
-	A.abc = 'A'
-	and 
-	B.abc = 'B'*/
-
-
+-- 66.slaids -----------------------------------------
 /*select 
 	ST_Union(geom)
 from
 	test.poligoni_polygons*/
 
-
+-- 67.slaids -----------------------------------------
 /*select
 	punkti.*
 from
@@ -189,6 +182,7 @@ join test.poligoni_polygons as poligoni
 where
 	poligoni.abc = 'A';*/
 
+-- 68.slaids -----------------------------------------
 /*--Izveido jaunu tabulu ar to līniju segmentiem,
 -- kas atrodas poligonā ar abc='A'.
 -- Funkcija ST_Intersection izgriež tos līnijas gabalus, kas atrodas iekšpusē:
@@ -204,6 +198,7 @@ join test.poligoni_polygons as p
 where
 	p.abc = 'A';*/
 
+-- 69.slaids -----------------------------------------
 /*--Sagrupē pēc poligonu atribūta abc un saskaita,
 -- cik punktu atrodas katrā poligonā. ST_Contains
 -- vai ST_Within pārbauda telpisko attiecību
@@ -218,7 +213,7 @@ left join test.punkti_points as pt
 group by
 	p.abc;*/
 
-
+-- 70.slaids -----------------------------------------
 /*--Apkopo līniju garumu (metriem) katrā poligonā.
 -- Pirmkārt, iegūst līnijas–poligona šķēlumu,
 -- tad izmanto ST_Length un sagrupē pēc poligonu abc:
@@ -233,6 +228,7 @@ join test.liinijas_lines as l
 group by
 	p.abc;*/
 
+-- 71.slaids -----------------------------------------
 /*--Izveido X metru buferi ap katru līniju un atlasa poligonus,
 -- kurus šis buferis skar.
 select
@@ -244,6 +240,7 @@ join test.poligoni_polygons as p
   on
 	ST_Intersects(ST_Buffer(l.geom, 20000), p.geom);*/
 
+-- 72.slaids -----------------------------------------
 /*--Apvieno visus poligonus, kuriem abc ir vienāds
 select
 	abc,
@@ -253,6 +250,7 @@ from
 group by
 	abc;*/
 
+-- 74.slaids -----------------------------------------
 /*select
 	p.abc as poly_abc, 	pt.abc as point_abc,
 	ST_Distance(ST_Centroid(p.geom), pt.geom) as distance_m
@@ -267,6 +265,7 @@ cross join lateral (
 		ST_Distance(ST_Centroid(p.geom), pt.geom)
 	limit 1 ) as pt;*/
 
+-- 75.slaids -----------------------------------------
 /*--Izmanto ST_Area un grupē pēc abc,
 --lai aprēķinātu katras kategorijas kopējo platību
 select
@@ -278,6 +277,7 @@ group by
 	abc
 order by total_area desc;*/
 
+-- 76.slaids -----------------------------------------
 /*--Izveido jaunu tabulu ar poligonu centroidiem un oriģinālajiem atribūtiem,
 --lai vēlāk ērti vizualizētu vai sasaistītu ar citiem datiem:
 create table test.polygons_centroids as
@@ -288,21 +288,7 @@ from
 	test.poligoni_polygons;
 select * from test.polygons_centroids;*/
 
-
-/*
---Simetriskā starpība starp poligoniem A un B (tikai A vai tikai B zonas)
---create table test.poly_symdiff_a_b as
-select
-	ST_SymDifference(a.geom, b.geom) as geom,
-	'A Δ B'::text as label
-from
-	test.poligoni_polygons a
-join test.poligoni_polygons b
-  on
-	a.abc = 'A'
-	and b.abc = 'B';
-*/
-
+-- 77.slaids -----------------------------------------
 /*--Attiecību klasifikācija starp līnijām un poligonu ‘A’
 -- (crosses/touches/within/disjoint)
 select
