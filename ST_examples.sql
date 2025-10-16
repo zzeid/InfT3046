@@ -263,12 +263,13 @@ cross join lateral (
 		test.punkti_points as pt
 	order by
 		ST_Distance(ST_Centroid(p.geom), pt.geom)
-	limit 1 ) as pt;*/
+	limit 1 ) as pt
+--where not ST_Intersects(p.geom, pt.geom)*/
 
 -- 75.slaids -----------------------------------------
-/*--Izmanto ST_Area un grupē pēc abc,
+--Izmanto ST_Area un grupē pēc abc,
 --lai aprēķinātu katras kategorijas kopējo platību
-select
+/*select
 	abc,
 	ROUND(SUM(ST_Area(geom))) as total_area
 from
@@ -276,6 +277,11 @@ from
 group by
 	abc
 order by total_area desc;*/
+
+
+
+
+
 
 -- 76.slaids -----------------------------------------
 /*--Izveido jaunu tabulu ar poligonu centroidiem un oriģinālajiem atribūtiem,
