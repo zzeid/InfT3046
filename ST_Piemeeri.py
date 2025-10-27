@@ -11,12 +11,12 @@ engine = create_engine('postgresql+psycopg2://postgres:postgres@localhost:5432/p
 #-- 13.slaids -----------------------------------------------------------------------------------------
 # Izpildām vienkāršu vaicājumu, piemēram, datubāzes versijas noskaidrošanai
 # (Execute a simple query, e.g., to check the database version)
-test_query = "SELECT version();"
-version_df = pd.read_sql(test_query, engine)
+#test_query = "SELECT version();"
+#version_df = pd.read_sql(test_query, engine)
 
 # Izdrukāsim rezultātu (Print out the result)
-with pd.option_context('display.max_colwidth', None):
-  print(version_df)
+#with pd.option_context('display.max_colwidth', None):
+#  print(version_df)
 
 #-- 15.slaids -----------------------------------------------------------------------------------------
 
@@ -82,19 +82,19 @@ with pd.option_context('display.max_colwidth', None):
 #-- 19.slaids -----------------------------------------------------------------------------------------
 # Aprēķinām divu poligonu A un B kopējo laukumu (ST_Intersection)
 # Compute the overlapping area of two polygons A and B (ST_Intersection)
-# query = """
-# SELECT ST_AsText(ST_Intersection(A.geom, B.geom)) AS intersection_wkt
-# FROM test.poligoni_polygons AS A
-# JOIN test.poligoni_polygons AS B
-#   ON A.abc = 'A' AND B.abc = 'B';
-# """
+query = """
+SELECT ST_AsText(ST_Intersection(A.geom, B.geom)) AS intersection_wkt
+FROM test.poligoni_polygons AS A
+JOIN test.poligoni_polygons AS B
+  ON A.abc = 'A' AND B.abc = 'B';
+"""
 # # Izpildām SQL vaicājumu un iegūstam rezultātu DataFrame formātā
 # # Execute the SQL query and get the result in a DataFrame
-# df_intersection = pd.read_sql(query, engine)
+df_intersection = pd.read_sql(query, engine)
 
 # # Izdrukājam iegūto ģeometriju WKT formātā (gaidāms, ka tā būs poligons, kas ir A un B pārklāšanās)
 # # Print the resulting geometry in WKT format (expected to be the polygon representing A ∩ B)
-# print("Intersection A∩B (WKT):", df_intersection['intersection_wkt'][0])
+print("Intersection A∩B (WKT):", df_intersection['intersection_wkt'][0])
 
 #-- 24.slaids -----------------------------------------------------------------------------------------
 # # Izgriežam to līniju segmentus, kas atrodas poligonā ar abc='A' (izmantojot ST_Intersection)
@@ -197,30 +197,30 @@ with pd.option_context('display.max_colwidth', None):
 # -*- coding: utf-8 -*-
 # LV: Nolasa PostGIS tabulu test.poligoni_polygons un saglabā abc, perimetru un platību HTML formātā.
 # EN: Reads PostGIS table test.poligoni_polygons and saves abc, perimeter, and area as an HTML report.
-from sqlalchemy import create_engine, text
-import pandas as pd
-import os
+#from sqlalchemy import create_engine, text
+#import pandas as pd
+#import os
 # ===== 1) Savienojums ar datubāzi =====
 # LV: Aizstājiet lietotājvārdu, paroli, hostu un datubāzi ar saviem.
 # EN: Replace username, password, host, and database with your own settings.
 #                      'postgresql+psycopg2://username:password@localhost:5432/my_database')
-engine = create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/postgres")
+#engine = create_engine("postgresql+psycopg2://postgres:postgres@localhost:5432/postgres")
 # HTML faila ceļš (kur saglabāt rezultātu)
 # Path to output HTML file
-html_out = "poligoni_report.html"
+#html_out = "poligoni_report.html"
 # ===== 2) Nolasa datus no PostGIS =====
 # LV: Atlasām abc, perimetru un platību. ST_Perimeter atgriež garumu (km), ST_Area – platību (km2).
 # EN: Select abc, perimeter, and area. ST_Perimeter returns length (km), ST_Area returns area (km2).
-with engine.connect() as conn:
-    df = pd.read_sql(text("""
-select
-	abc,
-	ROUND((ST_Perimeter(geom)/ 1000)::numeric, 1) as perimetrs_km,
-	ROUND((ST_Area(geom)/ 1000000)::numeric, 1) as platiba_km2
-from test.poligoni_polygons order by abc;"""),conn)
+#with engine.connect() as conn:
+#    df = pd.read_sql(text("""
+#select
+#	abc,
+#	ROUND((ST_Perimeter(geom)/ 1000)::numeric, 1) as perimetrs_km,
+#	ROUND((ST_Area(geom)/ 1000000)::numeric, 1) as platiba_km2
+#from test.poligoni_polygons order by abc;"""),conn)
 # ===== 3) Saglabā rezultātu HTML formātā =====
 # LV: Saglabā pandas DataFrame kā HTML tabulu (bez indeksa)
 # EN: Save the pandas DataFrame as an HTML table (without index)
-df.to_html(html_out, index=False)
-print("HTML pārskats saglabāts: ")
-print(f"   {os.path.abspath(html_out)}")
+#df.to_html(html_out, index=False)
+#print("HTML pārskats saglabāts: ")
+#print(f"   {os.path.abspath(html_out)}")
